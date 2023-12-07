@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashutosh</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyM1WPe1pFt3JvqFqDToClGK7miDPSI99" crossorigin="anonymous">
+<style>
+    /* Add styles for the recording buttons */
+.btn-record,
+.btn-stop,
+.btn-clear {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn-record {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.btn-record:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-stop {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+}
+
+.btn-stop:hover {
+    background-color: #bd2130;
+    border-color: #bd2130;
+}
+
+.btn-clear {
+    background-color: #28a745;
+    color: #fff;
+    border: 1px solid #28a745;
+}
+
+.btn-clear:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+/* Add styles for the transcript output */
+#output {
+    height: 100px;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    resize: none;
+}
+
+/* Add styles for the container */
+.container {
+    margin-top: 50px;
+}
+
+/* Add styles for responsiveness */
+@media (max-width: 768px) {
+    .btn-record,
+    .btn-stop,
+    .btn-clear {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+    <!-- Include Bootstrap CSS (add this to the head of your HTML file) -->
+   <!-- HTML without Bootstrap styling -->
+<div class="container">
+    <div>
+        <button class="btn-record" onclick="startRecording()">Start Recording</button>
+        <button class="btn-stop" onclick="stopRecording()">Stop Recording</button>
+        <button class="btn-clear" onclick="clearText()">Clear Text</button>
+    </div>
+    <div>
+        <label for="output">Transcript:</label>
+        <textarea id="output"></textarea>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and Popper.js (add this before the closing body tag of your HTML file) -->
+<script>
+    let recognition = new webkitSpeechRecognition();
+    recognition.lang = 'hi-IN'; // Set the language to Hindi (India)
+    
+    // Enable continuous speech recognition
+    recognition.continuous = true;
+
+    // Set interimResults to true to get interim results during recognition
+    recognition.interimResults = true;
+
+    recognition.onresult = function(event) {
+        let transcript = event.results[0][0].transcript;
+        document.getElementById('output').innerHTML = transcript;
+
+        // Send the transcript to the server (you need to implement this)
+        sendTranscriptToServer(transcript);
+    };
+
+    // Increase the pause time (in milliseconds) before recognition stops
+   
+    function clearText() {
+        document.getElementById('output').innerHTML = '';
+    }
+
+
+
+    function startRecording() {
+        if (!recognition) {
+            initializeRecognition();
+        }
+        recognition.start();
+    }
+
+    function stopRecording() {
+        if (recognition) {
+            recognition.stop();
+        }
+    }
+
+</script>
+</body>
+</html>
